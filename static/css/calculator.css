@@ -1,0 +1,82 @@
+/* Simple Calculator styling*/
+
+.main2 {
+	width : 100%;
+	position: relative;
+	top: 30px;
+}
+
+.calc-body2 {
+    margin-bottom: 10px;
+	
+}
+
+.header2 {
+	padding-bottom: 10px;
+}
+
+.recall-box2 {
+	padding-bottom: 10px;
+	text-align: right;
+}
+
+.user-input2 {
+	border: 1px solid;
+	padding: 5px;
+}
+
+input.inputValue2 {
+	width: 99%;
+	height: 40px;
+	border: 0;
+	font-size: 24px;
+	text-align: right;
+	outline: none;
+}
+
+input.readonly2 {
+	width: 99%;
+	border: 0;
+	outline: none;
+	text-align: right;
+}
+
+.button-table2 {
+	display: table;
+	width: 100%;
+	border: 0;
+}
+
+.divTableRow2 {
+	display: table-row;
+	height: 62px;
+}
+
+.divTableCell2 {
+	border: 0;
+	display: table-cell;
+}
+.divTableBody2 {
+	display: table-row-group;
+}
+
+.buttonCell {
+	font-size: 10pt;
+	font-style: normal;
+	height: 60px;
+    width: 75px;
+	font-family: Arial;
+}
+
+.buttonCell:hover {
+  background: #3cb0fd;
+  text-decoration: none;
+}
+
+.buttonCell i {
+    font-size: 10pt;
+    font-style: normal;
+    left: 1px;
+    position: relative;
+    top: -7px;
+}

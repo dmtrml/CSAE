@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Simple Calculator</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+		<script type="text/javascript" src="static/js/calculator.js"></script>
+		<link href="static/css/calculator.css" rel="stylesheet">
+	</head>
+	<body ng-app="SimpleCalculator">
+		<div class="main" ng-controller="CalculatorController">
+			<div class="calc-body">
+				<div class="header">
+					<div class="recall-box"><input type="text" class="readonly" readonly ng-model="recall"/></div>
+					<div class="user-input">
+						<input type="text" class="inputValue" ng-model="inputValue" numeric/>
+					</div>
+				</div>
+				<div>
+					<div class="button-table">
+						<div class="divTableBody">
+							<div class="divTableRow">
+								<div class="divTableCell"><button type="button" ng-click="onClickClear()">C</button></div>
+								<div class="divTableCell"><button type="button" ng-click="onClickPow()">x<i>y</i></button></div>
+								<div class="divTableCell"><button type="button" ng-click="onClickSquareRoot()">&#8730;</button></div>
+								<div class="divTableCell"><button type="button" ng-click="onClickOperation('Divide')">&#247;</button></div>
+							</div>
+							<div class="divTableRow">
+								<div class="divTableCell"><button type="button" ng-click="onClickTextDisplay('7')">7</button></div>
+								<div class="divTableCell"><button type="button" ng-click="onClickTextDisplay('8')">8</button></div>
+								<div class="divTableCell"><button type="button" ng-click="onClickTextDisplay('9')">9</button></div>
+								<div class="divTableCell"><button type="button" ng-click="onClickOperation('Multiply')">x</button></div>
+							</div>
+							<div class="divTableRow">
+								<div class="divTableCell"><button type="button" ng-click="onClickTextDisplay('4')">4</button></div>
+								<div class="divTableCell"><button type="button" ng-click="onClickTextDisplay('5')">5</button></div>
+								<div class="divTableCell"><button type="button" ng-click="onClickTextDisplay('6')">6</button></div>
+								<div class="divTableCell"><button type="button" ng-click="onClickOperation('Subtract')">-</button></div>
+							</div>
+							<div class="divTableRow">
+								<div class="divTableCell"><button type="button" ng-click="onClickTextDisplay('1')">1</button></div>
+								<div class="divTableCell"><button type="button" ng-click="onClickTextDisplay('2')">2</button></div>
+								<div class="divTableCell"><button type="button" ng-click="onClickTextDisplay('3')">3</button></div>
+								<div class="divTableCell"><button type="button" ng-click="onClickOperation('Add')">+</button></div>
+							</div>
+							<div class="divTableRow">
+								<div class="divTableCell"><button type="button" ng-click="onClickTextDisplay('Negative')()">+/-</button></div>
+								<div class="divTableCell"><button type="button" ng-click="onClickTextDisplay('0')">0</button></div>
+								<div class="divTableCell"><button type="button" ng-click="onClickTextDisplay('.')">.</button></div>
+								<div class="divTableCell"><button type="button" ng-click="onClickOperation('Total')">=</button></div>
+							</div>
+						</div>
+					</div>				
+				</div>
+			</div>
+		</div>	 
+	</body>
+</html>

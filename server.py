@@ -1,22 +1,35 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from db import db_session, User, Account
 import datetime
 
 app = Flask(__name__)
 
+u = User
+
 
 @app.route("/")
 def index():
+    # Period
+
+    get_start_data = request.args.get('get_start_data')
+    get_end_data = request.args.get('get_end_data')
+    if get_start_data == None or get_end_data == None:
+        get_start_data = '16.03.2016'
+        get_end_data = datetime.datetime.now().strftime('%d.%m.%Y')
+    print(get_start_data, type(get_start_data))
+    start_data = datetime.datetime.strptime(get_start_data, '%d.%m.%Y')
+    end_data = datetime.datetime.strptime(get_end_data, '%d.%m.%Y')
+
     # Income-Outcome
     outcome_operations = []
-    outcome_query = User.query.filter(User.outcome != 0).all()
+    outcome_query = u.query.filter(u.outcome != 0).filter(u.date >= start_data).filter(u.date <= end_data).all()
     for row in outcome_query:
         if row.category != '':
             outcome_operations.append(row.outcome)
     all_period_outcome = round(sum(outcome_operations), 2)
 
     income_operations = []
-    income_query = User.query.filter(User.income != 0).all()
+    income_query = u.query.filter(u.income != 0).filter(u.date >= start_data).filter(u.date <= end_data).all()
     for row in income_query:
         if row.category != '':
             income_operations.append(row.income)
@@ -40,7 +53,7 @@ def index():
         income_account_list = []
         outcome_account_list = []
         #print(account)
-        outcome_query_accounts = User.query.filter(User.outcome_account == account.account).all()
+        outcome_query_accounts = u.query.filter(u.outcome_account == account.account).filter(u.date >= start_data).filter(u.date <= end_data).all()
         for row in outcome_query_accounts:
             #print(row)
             if row.outcome_currency == 'RUB':
@@ -54,7 +67,7 @@ def index():
 
         #print(outcome_account_list)
 
-        income_query_accounts = User.query.filter(User.income_account == account.account).all()
+        income_query_accounts = u.query.filter(u.income_account == account.account).filter(u.date >= start_data).filter(u.date <= end_data).all()
         for row in income_query_accounts:
             #print(row)
             if row.income_currency == 'RUB':
@@ -79,17 +92,19 @@ def index():
 
     # List of category
     set_of_category = set()
-    all_data = User.query.all()
+    all_data = u.query.filter(u.date >= start_data).filter(u.date <= end_data).all()
     for row in all_data:
-        set_of_category.add(row.category)
+        if row.category != '':
+            set_of_category.add(row.category)
     print(set_of_category)
 
     # category value
-    category_value = []
+    green_category = []
+    red_category = []
     for category in set_of_category:
         income_category_list = []
         outcome_category_list = []
-        query_category = User.query.filter(User.category == category).all()
+        query_category = u.query.filter(u.category == category).filter(u.date >= start_data).filter(u.date <= end_data).all()
         for row in query_category:
             # print(row)
             if row.outcome_currency == 'RUB':
@@ -117,63 +132,68 @@ def index():
         value = round(sum(income_category_list) - sum(outcome_category_list), 2)
         #percent_value = int(value * 100 / balance)
         #value_all += value
-        category_value.append([category, value])
-    category_value = sorted(category_value, key=lambda tup: tup[1])
-    for cat_val in category_value:
+        if value > 0:
+            green_category.append([category, value])
+        elif value < 0:
+            red_category.append([category, value])
+    red_category = sorted(red_category, key=lambda tup: tup[1])
+    green_category = sorted(green_category, key=lambda tup: tup[1], reverse=True)
+    for cat_val in red_category:
         cat_val[1] = format(cat_val[1], ',.2f')
-    print(category_value)
+    for cat_val in green_category:
+        cat_val[1] = format(cat_val[1], ',.2f')
+
+    # Date-Time
+    #start_data = datetime.datetime.strptime('2016.12.15', '%Y.%m.%d')
+    #end_data = datetime.datetime.strptime('2017.12.20', '%Y.%m.%d')
+    #mydate = u.query.filter(u.date >= start_data).filter(u.date <= end_data)
+    #for row in mydate:
+    #    print(row.date)
 
 
-
-
-
-    """
-    set_of_account = set()
-    all_data = User.query.all()
-    for transaction in all_data:
-        set_of_account.add(transaction.outcome_account)
-        set_of_account.add(transaction.income_account)
-    print(set_of_account)
-    
-    list_of_salary = []
-    month_salary = 0
-    list_of_months = []
-    salary_category = User.query.filter(User.category=='Зарплата').all()
-
-    for salary in salary_category:
-        row_date = salary.date.strftime('%m.%Y')
-
-        if row_date not in list_of_months:
-            list_of_months.append(row_date)
-            if month_salary != 0:
-                list_of_salary.append(month_salary)
-            month_salary = salary.amount
-        else:
-            month_salary += salary.amount
-    else:
-        list_of_salary.append(month_salary)
-    print(list_of_months)
-    print(list_of_salary)
-
-    for month in list_of_months:
-        User.query.filter(User.category == 'Зарплата', ).all()
-
-#    for item in salary_category:
-#       list_of_salary.append(item.amount)
-#   print(list_of_salary)
-        #.db_session.query(u.amount).all()
-    #all_objects = [value for value, in list_of_cost]
-    numbers = list_of_months
-    """
     return render_template('index.html', all_period_outcome=all_period_outcome, all_period_income=all_period_income,
                            all_period_outcome_percent=all_period_outcome_percent,
                            all_period_income_percent=all_period_income_percent,
-                           balance=balance, account_value=account_value, category_value=category_value)
+                           balance=balance, account_value=account_value, red_category=red_category,
+                           green_category=green_category)
 
 
-@app.route("/<path>")
-def other(path):
-    return render_template(path)
+@app.route("/income")
+def income():
+    if request.args.get('account') is not '' and request.args.get('account') is not None:
+        new_transaction = User(datetime.datetime.strptime(request.args.get('date'), '%d.%m.%Y'), request.args.get('category'), request.args.get('comment'),
+                        request.args.get('account'), float(request.args.get('outcome')), "RUB", request.args.get('account'),
+                        float(request.args.get('income')), "RUB")
+        db_session.add(new_transaction)
+        db_session.commit()
+    return render_template('income.html')
+
+
+@app.route("/outcome")
+def outcome():
+    if request.args.get('account') is not '' and request.args.get('account') is not None:
+        new_transaction = User(datetime.datetime.strptime(request.args.get('date'), '%d.%m.%Y'), request.args.get('category'), request.args.get('comment'),
+                        request.args.get('account'), float(request.args.get('outcome')), "RUB", request.args.get('account'),
+                        float(request.args.get('income')), "RUB")
+        db_session.add(new_transaction)
+        db_session.commit()
+    return render_template('outcome.html')
+
+
+@app.route("/remittance")
+def remittance():
+    if request.args.get('from') is not '' and request.args.get('from') is not None:
+        new_transaction = User(datetime.datetime.strptime(request.args.get('date'), '%d.%m.%Y'), request.args.get('category'), request.args.get('comment'),
+                        request.args.get('from'), float(request.args.get('remitt')), "RUB", request.args.get('to'),
+                        float(request.args.get('remitt')), "RUB")
+        db_session.add(new_transaction)
+        db_session.commit()
+    return render_template('remittance.html')
+
+
+#@app.route("/<page>")
+#def other(page):
+#    return render_template(page)
 
 
 if __name__ == "__main__":

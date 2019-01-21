@@ -10,7 +10,9 @@
 <!-- vendor css files -->
 <link rel="stylesheet" href="static/js/vendor/bootstrap/css/bootstrap.min.css">
 
-<link rel="stylesheet" href="static/js/vendor/morris/morris.css">    
+<link rel="stylesheet" href="static/js/vendor/morris/morris.css">   
+<!-- Datetimepicker -->
+<link rel="stylesheet" href="static/css/bootstrap-datetimepicker.min.css" />
 <!-- project main css files -->
 <link rel="stylesheet" href="static/css/main.css">
 </head>
@@ -331,12 +333,23 @@
                                                 <span>Категории</span>
                                             </a>
                                             <ul>
-                                                {% for cat_val in category_value %}
+                                                {% for cat_val in red_category %}
+                                                <li>
+                                                    <a href="mail-inbox.html">
+                                                        
+                                                        <i class="fa fa-angle-right"></i>{{ cat_val.0 }}
+                                                        <br/>
+                                                        <span class="text-danger">{{ cat_val.1 }}</span>
+                                                    </a>
+                                                </li>
+                                                {% endfor %}
+                                                <br/>
+                                                {% for cat_val in green_category %}
                                                 <li>
                                                     <a href="mail-inbox.html">
                                                         <i class="fa fa-angle-right"></i>{{ cat_val.0 }}
                                                         <br/>
-                                                        <span class="text-muted">{{ cat_val.1 }}</span>
+                                                        <span class="text-success">{{ cat_val.1 }}</span>
                                                     </a>
                                                 </li>
                                                 {% endfor %}
@@ -789,16 +802,64 @@
                         
                             </div>
                         </div>
+                        <div class="col-lg-3 col-sm-12 col-md-6">
+                            <div class="boxs-header">
+                                <h3 class="custom-font hb-blush">Datepicker</h3>
+                            </div>
+                            <div class="boxs-body">
+                                <form class="form-inline" action="" method="GET">
+									<div class="col-md-6">
+                                     <div class="input-group date" id="datetimepicker1">
+                                     <input type="text" name="get_start_data" class="form-control" />
+                                     <span class="input-group-addon">
+                                        <span class="glyphicon-calendar glyphicon"></span>
+                                     </span>
+                                     </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                     <div class="input-group date" id="datetimepicker2">
+                                     <input type="text" name="get_end_data" class="form-control" />
+                                     <span class="input-group-addon">
+                                        <span class="glyphicon-calendar glyphicon"></span>
+                                     </span>
+                                     </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-raised btn-primary">Accept</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
             </div>
         </section>
     </div>
     <!-- Vendor JavaScripts -->
+    
     <script src="static/bundles/libscripts.bundle.js"></script>
     <script src="static/bundles/vendorscripts.bundle.js"></script>
-
+    <!-- Datetimepicker Content 
+      <script src="static/js/datetimepicker/jquery-3.2.1.min.js"></script>
+    -->
+      <script src="static/js/datetimepicker/moment-with-locales.min.js"></script>
+      <script src="static/js/datetimepicker/bootstrap.min.js"></script>
+      <script src="static/js/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+     <script type="text/javascript">
+     $('#datetimepicker1').datetimepicker({
+	    locale: 'ru',
+		stepping:10,
+		format: 'DD.MM.YYYY',
+                useCurrent: false
+	  });
+      $('#datetimepicker2').datetimepicker({
+	    locale: 'ru',
+		stepping:10,
+		format: 'DD.MM.YYYY',
+		defaultDate: moment()
+	  });
+    </script>
+    
     <!--/ vendor javascripts -->
-    <script src="static/bundles/flotscripts.bundle.js"></script>    
+    <script src="static/bundles/flotscripts.bundle.js"></script>
+    
     <script src="static/bundles/d3cripts.bundle.js"></script>
     <script src="static/bundles/sparkline.bundle.js"></script>
     <script src="static/bundles/raphael.bundle.js"></script>
@@ -807,6 +868,7 @@
 
     <!-- page Js -->
     <script src="static/bundles/mainscripts.bundle.js"></script>
-    <script src="static/js/page/index.js"></script>     
+    <script src="static/js/page/index.js"></script>
+    
 </body>
 </html>
