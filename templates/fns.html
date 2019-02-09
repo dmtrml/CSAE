@@ -1,0 +1,202 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Calculator content -->
+  <link href="static/css/calculator.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+  <script type="text/javascript" src="static/js/calculator.js"></script>
+  <!-- End calc content -->
+  <!-- Datetimepicker -->
+  <link rel="stylesheet" href="static/css/bootstrap-datetimepicker.min.css" />
+  <!-- End Datetimepicker -->
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <title>fns</title>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+  <link rel="stylesheet" href="static/js/vendor/bootstrap/css/bootstrap.min.css">
+  <!--  Fonts and icons -->
+  <!-- CSS Files -->
+  <link href="static/css/main.css" rel="stylesheet">
+  <!-- qrscaner Files -->
+  <script type="text/javascript" src="static/js/qrscan/llqrcode.js"></script>
+  <script type="text/javascript" src="static/js/qrscan/webqr.js"></script>
+<style type="text/css">
+#v{
+    width:320px;
+    height:240px;
+}
+#qr-canvas{
+    display:none;
+}
+#qrfile{
+    width:320px;
+    height:240px;
+}
+#mp1{
+    text-align:center;
+    font-size:35px;
+}
+#imghelp{
+    position:relative;
+    left:0px;
+    top:-160px;
+    z-index:100;
+    font:18px arial,sans-serif;
+    background:#f0f0f0;
+	margin-left:35px;
+	margin-right:35px;
+	padding-top:10px;
+	padding-bottom:10px;
+	border-radius:20px;
+}
+.selector{
+    margin:0;
+    padding:0;
+    cursor:pointer;
+    margin-bottom:-5px;
+}
+#outdiv
+{
+    width:320px;
+    height:240px;
+}
+#result{
+    <!-- display: none; -->
+}
+
+</style>
+
+</head>
+
+<body id="falcon" class="authentication">
+  <!-- Application Content -->
+  <div class="wrapper">
+    <div class="header header-filter" style="background-image: url(&#39;static/images/login-bg.jpg&#39;); background-size: cover; background-position: top center;">
+      <div class="container">
+          <div class="row justify-content-around">
+              <div class="col-lg-4 col-md-6 col-sm-12 text-center">
+            <div class="card card-signup">
+              <table class="tsel" border="0" width="100%">
+                <tbody><tr>
+                <td valign="top" align="center" width="50%">
+                <table class="tsel" border="0">
+                <tbody><tr>
+                <td><img class="selector" id="webcamimg" src="./fns_files/vid.png" onclick="setwebcam()" align="left"></td>
+                <td><img class="selector" id="qrimg" src="./fns_files/cam.png" onclick="setimg()" align="right"></td></tr>
+                <tr><td colspan="2" align="center">
+                <div id="outdiv">
+                </div></td></tr>
+                </tbody></table>
+                </td>
+                </tr>
+                <tr><td colspan="3" align="center">
+                <div id="result"></div>
+                </td></tr>
+                </tbody>
+              </table>
+                <canvas id="qr-canvas"></canvas>
+                <script type="text/javascript">load();</script>
+              <form class="form" method="POST">
+                                    <div class="boxs-body p-0">
+								<div class="table-responsive">
+									<table class="table table-middle">
+										<tbody>
+                                            {% for item in items %}
+											<tr>
+												<td>
+													<div class="checkbox">
+														<label>
+															<input type="checkbox" name="item_id" value="{{ item.item_id }}">
+														</label>
+													</div>
+												</td>
+												<td>
+													<input name="comment" type="text" class="form-control" value="{{ item.name }}">
+												</td>
+												<td>
+													<input name="outcome" type="text" class="form-control" value="{{ item.sum/100 }}">
+												</td>
+											</tr>
+                                            {% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+                <div class="content">
+                  <div class="form-group">
+			         <div class="input-group date" id="datetimepicker1">
+			         <input name="date" type="text" class="form-control">
+			         <span class="input-group-addon">
+				        <span class="glyphicon-calendar glyphicon"></span>
+			         </span>
+			         </div>
+		          </div>
+                  <div class="form-group">
+                    <select name="account" type="text">
+                        {% for account in list_of_accounts %}
+                        <option value="{{ account.account }}">{{ account.account }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <select name="account" type="text">
+                        {% for category in list_of_category %}
+                        <option value="{{ category.category }}">{{ category.category }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <select name="account" type="text">
+                        {% for subcategory in list_of_subcategory %}
+                        <option value="{{ subcategory.subcategory }}">{{ subcategory.subcategory }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                <!--
+                  <div class="form-group">
+                    <input name="category" type="text" class="form-control underline-input" placeholder="Category">
+                    </div>
+                -->
+                    <br>
+                    <input type="hidden" name="income" value="0.0">
+                </div>
+                <button type="submit" class="btn btn-raised btn-primary">Accept</button>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="footer">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 text-center mt-20">
+              <a href="https://www.pythonanywhere.com/user/aleksandrinomel/files/home/aleksandrinomel/CSAE/templates/login.html" class="text-uppercase text-white">Back</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+  <!-- Datetimepicker Content -->
+  <script src="static/js/datetimepicker/jquery-3.2.1.min.js"></script>
+  <script src="static/js/datetimepicker/moment-with-locales.min.js"></script>
+  <script src="static/js/datetimepicker/bootstrap.min.js"></script>
+  <script src="static/js/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript">
+    $('#datetimepicker1').datetimepicker({
+	    locale: 'ru',
+		stepping:10,
+		format: 'DD.MM.YYYY',
+        defaultDate: moment(),
+                useCurrent: true
+	  });
+  </script>
+  <!--  Vendor JavaScripts -->
+  <script src="static/bundles/libscripts.bundle.js"></script>
+  <script src="static/bundles/mainscripts.bundle.js"></script>  <!-- Custom Js -->
+</body>
+</html>

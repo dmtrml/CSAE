@@ -1,6 +1,8 @@
-from db import User
+from db import Category
 
-u = User
+u = Category
 
-data = u.query.order_by(User.category.desc()).all()
-print(data)
+data = u.query.get(1)
+a = data.subcategories
+for i in a:
+    print(i.subcategory)

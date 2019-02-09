@@ -43,7 +43,11 @@
 			         </div>
 		          </div>
                   <div class="form-group">
-                    <input name="account" type="text" class="form-control" placeholder="Account">
+                    <select name="account" type="text">
+                        {% for account in list_of_accounts %}
+                        <option value="{{ account.account }}">{{ account.account }}</option>
+                        {% endfor %}
+                    </select>
                   </div>
                   <div class="form-group">
                     <input name="category" type="text" class="form-control underline-input" placeholder="Category">

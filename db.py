@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine, Column, Integer,Float, String, Text, DateTime, ForeignKey
-from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.orm import scoped_session, sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 engine = create_engine('sqlite:///mybase.db')
@@ -51,6 +51,33 @@ class Account(Base):
 
     def __repr__(self):
         return '<Account {}>'.format(self.account)
+
+
+class Category(Base):
+    __tablename__ = 'categories'
+    id = Column(Integer, primary_key=True)
+    category = Column(String(70))
+    subcategories = relationship("Subcategory", backref='parent_category')
+
+    def __init__(self,category=None):
+        self.category = category
+
+    def __repr__(self):
+        return '<category {}>'.format(self.category)
+
+
+class Subcategory(Base):
+    __tablename__ = 'subcategories'
+    id = Column(Integer, primary_key=True)
+    subcategory = Column(String(70))
+    category_id = Column(Integer, ForeignKey('categories.id'))
+
+    def __init__(self,subcategory=None, category_id=None):
+        self.subcategory = subcategory
+        self.category_id = category_id
+
+    def __repr__(self):
+        return '<subcategory {} {}>'.format(self.subcategory, self.category_id)
 
 
 if __name__ == '__main__':

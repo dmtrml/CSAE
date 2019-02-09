@@ -43,10 +43,20 @@
 			         </div>
 		          </div>
                   <div class="form-group">
-                    <input name="from" type="text" class="form-control" placeholder="From">
+                      From
+                    <select name="from" type="text">
+                        {% for account in list_of_accounts %}
+                        <option value="{{ account.account }}">{{ account.account }}</option>
+                        {% endfor %}
+                    </select>
                   </div>
                   <div class="form-group">
-                    <input name="to" type="text" class="form-control underline-input" placeholder="To">
+                      To
+                    <select name="to" type="text">
+                        {% for account in list_of_accounts %}
+                        <option value="{{ account.account }}">{{ account.account }}</option>
+                        {% endfor %}
+                    </select>
                   </div>
                   <div class="form-group">
                     <input name="comment" type="text" class="form-control" placeholder="Comment">
